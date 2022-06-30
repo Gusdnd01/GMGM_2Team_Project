@@ -7,6 +7,7 @@ public class Orb : MonoBehaviour
 {
     Action action;
     Rigidbody2D rb;
+    bool isHit = true;
     public void Shoot(Action callback)
     {
         if(rb == null)
@@ -16,7 +17,18 @@ public class Orb : MonoBehaviour
     }
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        DeActive();
+        if(collision.GetComponent<IHitAble>() != null && isHit)
+        {
+            collision.GetComponent<IHitAble>().Hit(gameObject);
+            isHit = false;
+        }
+    }
+    public void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.GetComponent<IHitAble>() != null && !isHit)
+        {
+            isHit = true;
+        }
     }
     public void DeActive()
     {

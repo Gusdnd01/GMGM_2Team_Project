@@ -12,13 +12,6 @@ public class OrbShooter : MonoBehaviour
     {
         ActiveOrb();
     }
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && !isShoot)
-        {
-            Shoot();
-        }
-    }
     public void ActiveOrb()
     {
         orb.transform.position = spawnPos.position;
@@ -27,6 +20,7 @@ public class OrbShooter : MonoBehaviour
     }
     public void Shoot()
     {
+        if (isShoot) return;
         isShoot = true;
         orb.Shoot(() => ActiveOrb());
     }
