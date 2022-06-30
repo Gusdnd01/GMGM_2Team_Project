@@ -7,6 +7,12 @@ public class BlockMoveManager : MonoBehaviour
     public static BlockMoveManager instance;
 
     [SerializeField] private LayerMask layerMask;
+    [SerializeField] private GameObject focusObject;
+    #region 포커스 관련
+    [Header("포커스")]
+    [SerializeField] private SpriteRenderer rotRendere;
+    [SerializeField] private 
+    #endregion
     BlockMove targetBlock;
     float h, v;
     public void Awake()
@@ -29,10 +35,13 @@ public class BlockMoveManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && targetBlock != null)
         {
             targetBlock.Rotate();
+            focusObject.transform.rotation = Quaternion.identity;
         }
     }
     public void SetTargetBlock(BlockMove block)
     {
+        focusObject.transform.SetParent(block.transform);
+        focusObject.transform.localPosition = Vector3.zero;
         targetBlock = block;
     }
     IEnumerator MoveCor()

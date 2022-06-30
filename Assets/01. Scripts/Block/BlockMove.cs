@@ -11,7 +11,7 @@ public class BlockMove : MonoBehaviour
     }
     public virtual void Rotate()
     {
-        transform.rotation *= Quaternion.Euler(0, 0, 90);
+        transform.rotation *= Quaternion.Euler(0, 0, -90);
     }
     public virtual void OnMouseDown()
     {
