@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class SceneChangeManager : MonoBehaviour
 {
@@ -22,9 +23,13 @@ public class SceneChangeManager : MonoBehaviour
         if (_currentStageObject != null)
         {
             print("스테이지 삭제");
+            CameraManager.instance.isPuzzle = true;
             Destroy(_currentStageObject.gameObject);
         }
-
+        if(CameraManager.instance.isPuzzle == true)
+        {
+            CameraManager.instance.PuzzleCamActive();
+        }
         Stage stagePrefab = Resources.Load<Stage>($"{name} {index}");
         print("스테이지 로드");
         _currentStageObject = Instantiate(stagePrefab, Vector3.zero, Quaternion.identity);
