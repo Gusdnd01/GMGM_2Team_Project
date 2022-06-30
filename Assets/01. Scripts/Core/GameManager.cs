@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     {
         if (instance != null)
         {
-            Debug.LogError("Multiple instance is running");
+            Debug.LogError($"Multiple instance is running {this}");
         }
         instance = this;
 
