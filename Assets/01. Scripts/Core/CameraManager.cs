@@ -11,6 +11,8 @@ public class CameraManager : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera MonitorCam;
     [SerializeField] CinemachineVirtualCamera PuzzleCam;
 
+    [SerializeField] private Transform camRig;
+
     int frontPriority = 15;
     int backPriority = 10;
     int previousStagePriority = 5;
@@ -66,10 +68,33 @@ public class CameraManager : MonoBehaviour
         zoomValue += c * 2.5f;
 
         PuzzleCam.m_Lens.OrthographicSize = Mathf.Lerp(PuzzleCam.m_Lens.OrthographicSize, zoomValue, Time.deltaTime * 5);
+
+        if (Input.GetMouseButton(3))
+        {
+            float x = Input.GetAxisRaw("Mouse X");
+            float y = Input.GetAxisRaw("Mouse Y");
+
+            camRig.position += new Vector3(-x, -y, 0) * 100 * Time.deltaTime;
+        }
+
+        if(PuzzleCam.m_Lens.OrthographicSize > 6)
+        {
+            camRig.position = new Vector3(0, 0, 0);
+        }
+
+        if (Input.GetMouseButtonUp(3))
+        {
+
+        }
     }
 
     private void LateUpdate()
     {
         zoomValue = Mathf.Clamp(zoomValue, 4f, 9f);
+
+        float x = Mathf.Clamp(camRig.position.x, -16, 16);
+        float y = Mathf.Clamp(camRig.position.y, -9, 9);
+
+        camRig.position = new Vector3(x,y,0);
     }
 }

@@ -11,12 +11,12 @@ public class PlayerRay : MonoBehaviour
     [SerializeField] private GameObject monitorInterface;
 
     private Transform _canvas;
-    private Image _fadePanel;
+    private Image fade;
 
     void Start()
     {
+        fade = UIManager.Instance.FadePanel;
         _canvas = GameObject.Find("Canvas").GetComponent<Transform>();
-        _fadePanel = _canvas.Find("FadePanel").GetComponent<Image>();
     }
 
     void Update()
@@ -32,24 +32,17 @@ public class PlayerRay : MonoBehaviour
 
                 CameraManager.instance.MonitorCamActive();
 
-                seq.AppendInterval(1.5f);
+                monitorInterface.SetActive(true);
 
-                seq.AppendCallback(() =>
-                {
-                    monitorInterface.SetActive(true);
+                seq.AppendInterval(2.5f);
 
-                });
-
-                seq.Join(_fadePanel.DOFade(1, 1f));
-
-                seq.AppendInterval(1.5f);
+                fade.DOFade(1, 1);
 
                 seq.AppendCallback(() =>
                 {
                     SceneChangeManager.instance.LoadPrefab("Puzzle", 1);
+                    CameraManager.instance.isPuzzle = true;
                 });
-
-                seq.Join(_fadePanel.DOFade(0, 1f));
             }
         }
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class BlockMove : MonoBehaviour
+public class BlockMove : MonoBehaviour, IClickAble
 {
     public void Move(Vector2 moveDir, float moveDelay)
     {
@@ -13,7 +13,7 @@ public class BlockMove : MonoBehaviour
     {
         transform.rotation *= Quaternion.Euler(0, 0, 90);
     }
-    public void OnMouseDown()
+    public void MouseDown()
     {
         BlockMoveManager.instance.SetTargetBlock(this);
     }
