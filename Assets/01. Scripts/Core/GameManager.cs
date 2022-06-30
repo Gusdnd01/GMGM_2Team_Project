@@ -1,17 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-
-    void Start()
+    private Image fade;
+    private void Awake()
     {
-        if(instance != null)
+        if (instance != null)
         {
             Debug.LogError("Multiple instance is running");
         }
         instance = this;
+
+    }
+    void Start()
+    {
+        fade = UIManager.Instance.FadePanel;
+        fade.DOFade(0, 1);
+
+        SceneChangeManager.instance.LoadPrefab("Platform", 1); 
     }
 }

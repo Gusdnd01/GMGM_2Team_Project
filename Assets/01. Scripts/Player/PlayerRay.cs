@@ -41,6 +41,15 @@ public class PlayerRay : MonoBehaviour
                 });
 
                 seq.Join(_fadePanel.DOFade(1, 1f));
+
+                seq.AppendInterval(1.5f);
+
+                seq.AppendCallback(() =>
+                {
+                    SceneChangeManager.instance.LoadPrefab("Puzzle", 1);
+                });
+
+                seq.Join(_fadePanel.DOFade(0, 1f));
             }
         }
     }

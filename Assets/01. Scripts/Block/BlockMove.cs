@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class BlockMove : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void Move(Vector2 moveDir, float moveDelay)
     {
-        
+        transform.DOMove(transform.position + (Vector3)moveDir, moveDelay * 0.75f);
     }
-
-    // Update is called once per frame
-    void Update()
+    public void Rotate()
     {
-        
+        transform.rotation *= Quaternion.Euler(0, 0, 90);
+    }
+    public void OnMouseDown()
+    {
+        BlockMoveManager.instance.SetTargetBlock(this);
     }
 }
