@@ -1,18 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class BlockMoveManager : MonoBehaviour
 {
     public static BlockMoveManager instance;
 
     [SerializeField] private LayerMask layerMask;
-    [SerializeField] private GameObject focusObject;
+    [SerializeField] private float moveDelay;
+
     #region 포커스 관련
     [Header("포커스")]
-    [SerializeField] private SpriteRenderer rotRendere;
-    [SerializeField] private 
+    [SerializeField] private GameObject focusObject;
+    [SerializeField] private SpriteRenderer upArrow;
+    [SerializeField] private SpriteRenderer downArrow;
+    [SerializeField] private SpriteRenderer rightArrow;
+    [SerializeField] private SpriteRenderer leftArrow;
+    [SerializeField] private SpriteRenderer rotArrow;
     #endregion
+
+    #region 사운드
+    [Header("사운드")]
+    [SerializeField] private AudioClip moveClip;
+    [SerializeField] private AudioClip rotClip;
+    #endregion
+
     BlockMove targetBlock;
     float h, v;
     public void Awake()
@@ -35,6 +48,9 @@ public class BlockMoveManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && targetBlock != null)
         {
             targetBlock.Rotate();
+            Sequence seq = DOTween.Sequence();
+            seq.AppendCallback(() => rotArrow.color = Color.red);
+            seq.Append(rotArrow.DOColor(Color.white, 0.25f));
             focusObject.transform.rotation = Quaternion.identity;
         }
     }
@@ -44,10 +60,24 @@ public class BlockMoveManager : MonoBehaviour
         focusObject.transform.localPosition = Vector3.zero;
         targetBlock = block;
     }
+    private void ArrowEffect(Vector2 dir)
+    {
+        SpriteRenderer targetArrow = null;
+        if (dir.x > 0) targetArrow = rightArrow;
+        if (dir.x < 0) targetArrow = leftArrow;
+        if (dir.y > 0) targetArrow = upArrow;
+        if (dir.y < 0) targetArrow = downArrow;
+        Sequence seq = DOTween.Sequence();
+        seq.AppendCallback(() => {
+            targetArrow.color = Color.red;
+            targetArrow.transform.localScale = Vector3.one;
+        });
+        seq.Append(targetArrow.DOColor(Color.white, 0.25f));
+        seq.Join(targetArrow.transform.DOScale(Vector3.one * 0.5f, 0.25f));
+    }
     IEnumerator MoveCor()
     {
-        WaitForSeconds ws = new WaitForSeconds(0.15f);
-        float moveDelay = 0.15f;
+        WaitForSeconds ws = new WaitForSeconds(moveDelay);
         while (true)
         {
             yield return new WaitUntil(() => (h != 0 || v != 0) && targetBlock != null);
@@ -71,6 +101,10 @@ public class BlockMoveManager : MonoBehaviour
                 continue;
             }
             targetBlock.Move(moveDir, moveDelay);
+            ArrowEffect(moveDir);
+
+            PoolManager.instance.Pop(PoolType.Audio).GetComponent<AudioPool>().Play(moveClip, Random.Range(0.9f, 1.1f));
+
             yield return ws;
         }
     }
