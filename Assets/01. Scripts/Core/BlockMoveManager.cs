@@ -9,6 +9,8 @@ public class BlockMoveManager : MonoBehaviour
 
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private float moveDelay;
+    private bool isCanControll = true;
+    public bool IsCanControll { get { return isCanControll; } set { isCanControll = value; } }
 
     #region 포커스 관련
     [Header("포커스")]
@@ -23,6 +25,7 @@ public class BlockMoveManager : MonoBehaviour
     #region 사운드
     [Header("사운드")]
     [SerializeField] private AudioClip moveClip;
+    [SerializeField] private AudioClip moveCancelClip;
     [SerializeField] private AudioClip rotClip;
     #endregion
 
@@ -39,6 +42,7 @@ public class BlockMoveManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(MoveCor());
+        ResetTargetBlock();
     }
     void Update()
     {
@@ -47,6 +51,7 @@ public class BlockMoveManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && targetBlock != null)
         {
+            PoolManager.instance.Pop(PoolType.Audio).GetComponent<AudioPool>().Play(rotClip, Random.Range(0.9f, 1.1f));
             targetBlock.Rotate();
             Sequence seq = DOTween.Sequence();
             seq.AppendCallback(() => rotArrow.color = Color.red);
@@ -56,9 +61,17 @@ public class BlockMoveManager : MonoBehaviour
     }
     public void SetTargetBlock(BlockMove block)
     {
+        if (!isCanControll) return;
+        focusObject.SetActive(true);
         focusObject.transform.SetParent(block.transform);
         focusObject.transform.localPosition = Vector3.zero;
         targetBlock = block;
+    }
+    public void ResetTargetBlock()
+    {
+        focusObject.SetActive(false);
+        focusObject.transform.SetParent(null);
+        targetBlock = null;
     }
     private void ArrowEffect(Vector2 dir)
     {
@@ -97,6 +110,7 @@ public class BlockMoveManager : MonoBehaviour
             Debug.DrawRay(targetBlock.transform.position + (Vector3)moveDir * 0.55f, moveDir * 0.45f, Color.blue, 1);
             if (hit.transform != null)
             {
+                PoolManager.instance.Pop(PoolType.Audio).GetComponent<AudioPool>().Play(moveCancelClip, Random.Range(0.9f, 1.1f));
                 yield return ws;
                 continue;
             }

@@ -17,11 +17,14 @@ public class OrbShooter : MonoBehaviour
         orb.transform.position = spawnPos.position;
         orb.gameObject.SetActive(true);
         isShoot = false;
+        BlockMoveManager.instance.IsCanControll = true;
     }
     public void Shoot()
     {
         if (isShoot) return;
         isShoot = true;
         orb.Shoot(() => ActiveOrb());
+        BlockMoveManager.instance.IsCanControll = false;
+        BlockMoveManager.instance.ResetTargetBlock();
     }
 }

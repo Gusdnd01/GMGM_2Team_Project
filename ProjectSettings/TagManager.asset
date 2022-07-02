@@ -15,7 +15,7 @@ TagManager:
   - Interact
   - Wall
   - Confiner
-  - 
+  - BackGround
   - 
   - 
   - 
@@ -46,6 +46,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3781407973
+    locked: 0
+  - name: Block
+    uniqueID: 1800990669
     locked: 0
   - name: Top
     uniqueID: 836652647

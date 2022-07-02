@@ -19,6 +19,11 @@ public class CameraManager : MonoBehaviour
 
     float zoomValue = 4;
 
+    #region Shake
+    CinemachineBasicMultiChannelPerlin shakeCam = null;
+    float shakeTime = 0;
+    #endregion
+
     public bool isPuzzle = true;
 
     private void Awake()
@@ -59,6 +64,7 @@ public class CameraManager : MonoBehaviour
     private void Update()
     {
         CamMove();
+        Shake();
     }
 
     private void CamMove()
@@ -96,5 +102,29 @@ public class CameraManager : MonoBehaviour
         float y = Mathf.Clamp(camRig.position.y, -9, 9);
 
         camRig.position = new Vector3(x,y,0);
+    }
+
+    private void Shake()
+    {
+        if(shakeTime > 0)
+        {
+            shakeTime -= Time.deltaTime;
+        }
+        else
+        {
+            shakeCam.m_AmplitudeGain = 0;
+        }
+    }
+
+    public void ShakeCam(float intensity, float time)
+    {
+        int maxPriority = 0;
+        if(MainCam.Priority > maxPriority) { maxPriority = MainCam.Priority; shakeCam = MainCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>(); }
+        if(MonitorCam.Priority > maxPriority) { maxPriority = MonitorCam.Priority; shakeCam = MonitorCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>(); }
+        if(PuzzleCam.Priority > maxPriority) { maxPriority = PuzzleCam.Priority; shakeCam = PuzzleCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>(); }
+
+        if (shakeCam == null) return;
+        shakeCam.m_AmplitudeGain = intensity;
+        shakeTime += time;
     }
 }
