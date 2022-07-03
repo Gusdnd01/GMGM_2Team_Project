@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 8435942977740478160}
   - component: {fileID: 8435942977740478175}
   - component: {fileID: 5752932452162888304}
+  - component: {fileID: -8892855059051822789}
   m_Layer: 6
   m_Name: CannonBlock
   m_TagString: Untagged
@@ -179,3 +180,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   exitPos: {fileID: 3815949900807786183}
+--- !u!114 &-8892855059051822789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8435942977740478171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78103bc178a14714183a7e8da0ab2731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
