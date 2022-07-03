@@ -8,6 +8,8 @@ public class OrbShooter : MonoBehaviour
     [SerializeField] private Transform spawnPos;
     bool isShoot;
 
+
+
     public void Start()
     {
         ActiveOrb();
