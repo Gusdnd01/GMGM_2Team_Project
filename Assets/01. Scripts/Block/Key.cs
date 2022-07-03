@@ -2,11 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class Key : MonoBehaviour, IHitAble
 {
     [SerializeField] private UnityEvent callEvent;
+    Image fade;
 
+
+    private void Start()
+    {
+        fade = UIManager.Instance.FadePanel;
+    }
     public void Hit(GameObject obj)
     {
         obj.GetComponent<Orb>().DeActive();
@@ -15,6 +23,6 @@ public class Key : MonoBehaviour, IHitAble
 
     public void Test()
     {
-        print("AA");
+        SceneChangeManager.instance.LoadPrefab("StageSelect", 1);
     }
 }

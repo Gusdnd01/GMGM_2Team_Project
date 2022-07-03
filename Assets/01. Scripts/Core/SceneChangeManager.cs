@@ -10,6 +10,7 @@ public class SceneChangeManager : MonoBehaviour
     public static SceneChangeManager instance;
     private GameObject stage;//_currentStageObject = null;
     private GameObject puzzle;
+    private GameObject stageSelect;
     private bool isStage;
     Image fade;
     //List<Stage> stages = new List<Stage>();
@@ -43,8 +44,11 @@ public class SceneChangeManager : MonoBehaviour
 
         puzzle = Instantiate(Resources.Load<GameObject>($"Puzzle {idx}"), Vector3.zero, Quaternion.identity);
         stage = Instantiate(Resources.Load<GameObject>($"Platform {idx}"), Vector3.zero, Quaternion.identity);
+        stageSelect = Instantiate(Resources.Load<GameObject>($"StageSelect {idx}"), Vector3.zero, Quaternion.identity);
+
         puzzle.SetActive(false);
         stage.SetActive(false);
+        stageSelect.SetActive(false);
         /*for(int i = 0; i < stages.Count; i++)
         {
             Stage stage = stages[i];
@@ -67,11 +71,13 @@ public class SceneChangeManager : MonoBehaviour
             Sequence seq = DOTween.Sequence();
 
             seq.AppendInterval(1.5f);
+
             fade.DOFade(1, 1);
 
             seq.AppendCallback(() =>
             {
                 LoadPrefab("Platform", 1);
+
                 CameraManager.instance.isPuzzle = false;
             });
         }
@@ -86,9 +92,12 @@ public class SceneChangeManager : MonoBehaviour
             seq.AppendInterval(1.5f);
 
             print("Platform Scene");
+
             stage.SetActive(true);
             puzzle.SetActive(false);
+
             fade.DOFade(0, 1);
+
             CameraManager.instance.MainCamActive();
         }
         if(name == "Puzzle")
@@ -96,10 +105,29 @@ public class SceneChangeManager : MonoBehaviour
             seq.AppendInterval(1.5f);
 
             print("Puzzle Scene");
+
             stage.SetActive(false);
             puzzle.SetActive(true);
+
             fade.DOFade(0, 1);
+
             CameraManager.instance.PuzzleCamActive();
+        }
+        if(name == "StageSelect")
+        {
+            seq.Append(fade.DOFade(1, 0.1f));
+
+            seq.AppendInterval(1.5f);
+
+            print("Stage Scene");
+
+            stage.SetActive(false);
+            puzzle.SetActive(false);
+            stageSelect.SetActive(true);
+
+            seq.Append(fade.DOFade(0, 1));
+
+            CameraManager.instance.MainCamActive();
         }
         /*if (_currentStageObject != null)
         {
