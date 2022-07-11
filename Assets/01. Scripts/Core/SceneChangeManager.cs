@@ -11,6 +11,12 @@ public class SceneChangeManager : MonoBehaviour
     private GameObject stage;//_currentStageObject = null;
     private GameObject puzzle;
     private GameObject stageSelect;
+    private GameObject nextStage;
+
+    [SerializeField] private Transform puzzleParent;
+    [SerializeField] private Transform platformParent;
+    [SerializeField] private Transform stageSelectParent;
+
     private bool isStage;
     Image fade;
     //List<Stage> stages = new List<Stage>();
@@ -29,9 +35,10 @@ public class SceneChangeManager : MonoBehaviour
         //stages.Add(stagePrefab);
         //stages.Add(stage);
 
-        Set(1);
-
-        
+        //Set(1);
+        LoadResource("Platform", 1);
+        LoadResource("Puzzle", 1);
+        LoadResource("StageSelect", 1);
     }
 
     private void Start()
@@ -41,14 +48,21 @@ public class SceneChangeManager : MonoBehaviour
 
     public void Set(int idx)
     {
-
+        #region 스테이지 생성
         puzzle = Instantiate(Resources.Load<GameObject>($"Puzzle {idx}"), Vector3.zero, Quaternion.identity);
         stage = Instantiate(Resources.Load<GameObject>($"Platform {idx}"), Vector3.zero, Quaternion.identity);
         stageSelect = Instantiate(Resources.Load<GameObject>($"StageSelect {idx}"), Vector3.zero, Quaternion.identity);
+        #endregion
 
-        puzzle.SetActive(false);
-        stage.SetActive(false);
-        stageSelect.SetActive(false);
+        #region 스테이지 부모 지정
+        puzzle.transform.SetParent(puzzleParent);
+        stage.transform.SetParent(platformParent);
+        stageSelect.transform.SetParent(stageSelectParent);
+        #endregion
+
+        puzzleParent.gameObject.SetActive(false);
+        platformParent.gameObject.SetActive(false);
+        stageSelectParent.gameObject.SetActive(false);
         /*for(int i = 0; i < stages.Count; i++)
         {
             Stage stage = stages[i];
@@ -58,7 +72,16 @@ public class SceneChangeManager : MonoBehaviour
             stage.gameObject.SetActive(false);
         }*/
     }
-
+    void LoadResource(string name, int idx)
+    {
+        GameObject obj = Instantiate(Resources.Load<GameObject>($"{name} {idx}"), Vector3.zero, Quaternion.identity);
+        if (name == "Puzzle")
+            obj.transform.SetParent(puzzleParent);
+        if (name == "Platform")
+            obj.transform.SetParent(platformParent);
+        if (name == "StageSelect")
+            obj.transform.SetParent(stageSelectParent);
+    }
     public void Update()
     {
         Test();
@@ -91,10 +114,9 @@ public class SceneChangeManager : MonoBehaviour
         {
             seq.AppendInterval(1.5f);
 
-            print("Platform Scene");
-
-            stage.SetActive(true);
-            puzzle.SetActive(false);
+            platformParent.gameObject.SetActive(true);
+            puzzleParent.gameObject.SetActive(false);
+            stageSelectParent.gameObject.SetActive(false);
 
             fade.DOFade(0, 1);
 
@@ -104,10 +126,9 @@ public class SceneChangeManager : MonoBehaviour
         {
             seq.AppendInterval(1.5f);
 
-            print("Puzzle Scene");
-
-            stage.SetActive(false);
-            puzzle.SetActive(true);
+            platformParent.gameObject.SetActive(false);
+            puzzleParent.gameObject.SetActive(true);
+            stageSelectParent.gameObject.SetActive(false);
 
             fade.DOFade(0, 1);
 
@@ -115,19 +136,16 @@ public class SceneChangeManager : MonoBehaviour
         }
         if(name == "StageSelect")
         {
-            seq.Append(fade.DOFade(1, 0.1f));
+            CameraManager.instance.StageSelectCamActive();
 
             seq.AppendInterval(1.5f);
 
-            print("Stage Scene");
-
-            stage.SetActive(false);
-            puzzle.SetActive(false);
-            stageSelect.SetActive(true);
+            platformParent.gameObject.SetActive(false);
+            puzzleParent.gameObject.SetActive(false);
+            stageSelectParent.gameObject.SetActive(true);
 
             seq.Append(fade.DOFade(0, 1));
 
-            CameraManager.instance.MainCamActive();
         }
         /*if (_currentStageObject != null)
         {

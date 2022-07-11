@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class StageSelect : MonoBehaviour, IClickAble
 {
+    [SerializeField] int stageIndex;
     public void MouseDown()
     {
         print("¿€µø¡ﬂ");
-        StageFocusManager.instance.StageTransform(this.transform);
+        StageFocusManager.instance.SetStage(this.transform, stageIndex);
     }
 
     private void Update()

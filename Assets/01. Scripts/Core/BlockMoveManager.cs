@@ -91,6 +91,7 @@ public class BlockMoveManager : MonoBehaviour
     IEnumerator MoveCor()
     {
         WaitForSeconds ws = new WaitForSeconds(moveDelay);
+        yield return new WaitForSecondsRealtime(1);
         while (true)
         {
             yield return new WaitUntil(() => (h != 0 || v != 0) && targetBlock != null);
