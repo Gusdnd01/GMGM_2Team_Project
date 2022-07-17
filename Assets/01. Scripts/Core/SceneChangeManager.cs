@@ -75,10 +75,13 @@ public class SceneChangeManager : MonoBehaviour
     void LoadResource(string name, int idx)
     {
         GameObject obj = Instantiate(Resources.Load<GameObject>($"{name} {idx}"), Vector3.zero, Quaternion.identity);
+
         if (name == "Puzzle")
             obj.transform.SetParent(puzzleParent);
+
         if (name == "Platform")
             obj.transform.SetParent(platformParent);
+
         if (name == "StageSelect")
             obj.transform.SetParent(stageSelectParent);
     }
