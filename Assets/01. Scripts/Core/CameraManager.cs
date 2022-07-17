@@ -10,6 +10,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera MainCam;
     [SerializeField] CinemachineVirtualCamera MonitorCam;
     [SerializeField] CinemachineVirtualCamera PuzzleCam;
+    [SerializeField] CinemachineVirtualCamera StageSelectCam;
 
     [SerializeField] private Transform camRig;
 
@@ -40,6 +41,7 @@ public class CameraManager : MonoBehaviour
         MainCam.Priority = frontPriority;
         MonitorCam.Priority = backPriority;
         PuzzleCam.Priority = previousStagePriority;
+        StageSelectCam.Priority = previousStagePriority;
 
         isPuzzle = false;
     }
@@ -49,7 +51,8 @@ public class CameraManager : MonoBehaviour
         MainCam.Priority = backPriority;
         MonitorCam.Priority = frontPriority;
         PuzzleCam.Priority = previousStagePriority;
-        
+        StageSelectCam.Priority = previousStagePriority;
+
         isPuzzle = false;
     }
 
@@ -58,13 +61,21 @@ public class CameraManager : MonoBehaviour
         PuzzleCam.Priority = frontPriority;
         MainCam.Priority = previousStagePriority;
         MonitorCam.Priority = previousStagePriority;
+        StageSelectCam.Priority = previousStagePriority;
 
         PuzzleCam.m_Lens.OrthographicSize = 9;
+    }
+    public void StageSelectCamActive()
+    {
+        PuzzleCam.Priority = previousStagePriority;
+        MainCam.Priority = previousStagePriority;
+        MonitorCam.Priority = previousStagePriority;
+        StageSelectCam.Priority = frontPriority;
     }
     private void Update()
     {
         CamMove();
-        Shake();
+        //Shake();
     }
 
     private void CamMove()
@@ -86,11 +97,6 @@ public class CameraManager : MonoBehaviour
         if(PuzzleCam.m_Lens.OrthographicSize > 6)
         {
             camRig.position = new Vector3(0, 0, 0);
-        }
-
-        if (Input.GetMouseButtonUp(3))
-        {
-
         }
     }
 
