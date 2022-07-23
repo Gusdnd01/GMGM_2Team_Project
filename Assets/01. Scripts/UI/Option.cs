@@ -48,25 +48,25 @@ public class Option : MonoBehaviour
 
         switch (index)
         {
-            case 0:
+            case 3:
                 _master.color = Color.gray;
                 _bgm.color = Color.white;
                 _sfx.color = Color.white;
                 _back.color = Color.white;
                 break;
-            case 1:
+            case 2:
                 _master.color = Color.white;
                 _bgm.color = Color.gray;
                 _sfx.color = Color.white;
                 _back.color = Color.white;
                 break;
-            case 2:
+            case 1:
                 _master.color = Color.white;
                 _bgm.color = Color.white;
                 _sfx.color = Color.gray;
                 _back.color = Color.white;
                 break;
-            case 3:
+            case 0:
                 _master.color = Color.white;
                 _bgm.color = Color.white;
                 _sfx.color = Color.white;

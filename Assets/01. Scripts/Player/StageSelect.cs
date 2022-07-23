@@ -7,7 +7,6 @@ public class StageSelect : MonoBehaviour, IClickAble
     [SerializeField] int stageIndex;
     public void MouseDown()
     {
-        print("�۵���");
         StageFocusManager.instance.SetStage(this.transform, stageIndex);
     }
 

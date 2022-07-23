@@ -48,7 +48,7 @@ public class Menu : MonoBehaviour
 
         switch (index)
         {
-            case 0:
+            case 2:
                 _resume.color = Color.gray;
                 _option.color = Color.white;
                 _back.color = Color.white;
@@ -58,7 +58,7 @@ public class Menu : MonoBehaviour
                 _option.color = Color.gray;
                 _back.color = Color.white;
                 break;
-            case 2:
+            case 0:
                 _resume.color = Color.white;
                 _option.color = Color.white;
                 _back.color = Color.gray;
