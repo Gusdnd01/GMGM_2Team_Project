@@ -85,29 +85,6 @@ public class SceneChangeManager : MonoBehaviour
         if (name == "StageSelect")
             obj.transform.SetParent(stageSelectParent);
     }
-    public void Update()
-    {
-        Test();
-    }
-
-    public void Test()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Sequence seq = DOTween.Sequence();
-
-            seq.AppendInterval(1.5f);
-
-            fade.DOFade(1, 1);
-
-            seq.AppendCallback(() =>
-            {
-                LoadPrefab("Platform", 1);
-
-                CameraManager.instance.isPuzzle = false;
-            });
-        }
-    }
 
     public void LoadPrefab(string name, int index)
     {

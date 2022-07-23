@@ -23,7 +23,10 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
-        Move();
+        if(Time.timeScale > 0)
+        {
+            Move();
+        }
     }
     /// <summary>
     /// 플레이어 움직임
