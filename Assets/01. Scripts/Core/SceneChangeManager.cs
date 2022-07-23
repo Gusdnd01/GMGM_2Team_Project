@@ -8,7 +8,7 @@ using DG.Tweening;
 public class SceneChangeManager : MonoBehaviour
 {
     public static SceneChangeManager instance;
-    private GameObject stage;//_currentStageObject = null;
+    private GameObject stage;
     private GameObject puzzle;
     private GameObject stageSelect;
     private GameObject nextStage;
@@ -19,7 +19,6 @@ public class SceneChangeManager : MonoBehaviour
 
     private bool isStage;
     Image fade;
-    //List<Stage> stages = new List<Stage>();
 
     private void Awake()
     {
@@ -30,12 +29,6 @@ public class SceneChangeManager : MonoBehaviour
 
         instance = this;
 
-        //Stage stagePrefab = Resources.Load<Stage>("Platform 1");
-        //Stage stage = Resources.Load<Stage>("Puzzle 1");
-        //stages.Add(stagePrefab);
-        //stages.Add(stage);
-
-        //Set(1);
         LoadResource("Platform", 1);
         LoadResource("Puzzle", 1);
         LoadResource("StageSelect", 1);
@@ -48,13 +41,13 @@ public class SceneChangeManager : MonoBehaviour
 
     public void Set(int idx)
     {
-        #region ½ºÅ×ÀÌÁö »ý¼º
+        #region ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         puzzle = Instantiate(Resources.Load<GameObject>($"Puzzle {idx}"), Vector3.zero, Quaternion.identity);
         stage = Instantiate(Resources.Load<GameObject>($"Platform {idx}"), Vector3.zero, Quaternion.identity);
         stageSelect = Instantiate(Resources.Load<GameObject>($"StageSelect {idx}"), Vector3.zero, Quaternion.identity);
         #endregion
 
-        #region ½ºÅ×ÀÌÁö ºÎ¸ð ÁöÁ¤
+        #region ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½
         puzzle.transform.SetParent(puzzleParent);
         stage.transform.SetParent(platformParent);
         stageSelect.transform.SetParent(stageSelectParent);
@@ -63,14 +56,6 @@ public class SceneChangeManager : MonoBehaviour
         puzzleParent.gameObject.SetActive(false);
         platformParent.gameObject.SetActive(false);
         stageSelectParent.gameObject.SetActive(false);
-        /*for(int i = 0; i < stages.Count; i++)
-        {
-            Stage stage = stages[i];
-
-            Instantiate(stage, transform.position, Quaternion.identity);
-
-            stage.gameObject.SetActive(false);
-        }*/
     }
     void LoadResource(string name, int idx)
     {
@@ -85,30 +70,6 @@ public class SceneChangeManager : MonoBehaviour
         if (name == "StageSelect")
             obj.transform.SetParent(stageSelectParent);
     }
-    public void Update()
-    {
-        Test();
-    }
-
-    public void Test()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Sequence seq = DOTween.Sequence();
-
-            seq.AppendInterval(1.5f);
-
-            fade.DOFade(1, 1);
-
-            seq.AppendCallback(() =>
-            {
-                LoadPrefab("Platform", 1);
-
-                CameraManager.instance.isPuzzle = false;
-            });
-        }
-    }
-
     public void LoadPrefab(string name, int index)
     {
         Sequence seq = DOTween.Sequence();
@@ -150,21 +111,10 @@ public class SceneChangeManager : MonoBehaviour
             seq.Append(fade.DOFade(0, 1));
 
         }
-        /*if (_currentStageObject != null)
-        {
-            print("½ºÅ×ÀÌÁö »èÁ¦");
-            CameraManager.instance.isPuzzle = true;
-            _currentStageObject.gameObject.SetActive(false);
-        }
+    }
 
-        if(CameraManager.instance.isPuzzle == true)
-        {
-            CameraManager.instance.PuzzleCamActive();
-        }
+    private void Init() 
+    {
 
-        print("½ºÅ×ÀÌÁö ·Îµå");
-        Stage stagePrefab = Resources.Load<Stage>($"{name} {index}");
-        _currentStageObject.gameObject.SetActive(true);
-        print("½ºÅ×ÀÌÁö »ý¼º");*/
     }
 }

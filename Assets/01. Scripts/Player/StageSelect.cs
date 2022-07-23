@@ -7,7 +7,7 @@ public class StageSelect : MonoBehaviour, IClickAble
     [SerializeField] int stageIndex;
     public void MouseDown()
     {
-        print("ÀÛµ¿Áß");
+        print("ï¿½Ûµï¿½ï¿½ï¿½");
         StageFocusManager.instance.SetStage(this.transform, stageIndex);
     }
 
@@ -15,6 +15,7 @@ public class StageSelect : MonoBehaviour, IClickAble
     {
         if(transform.position.x == StageFocusManager.instance.playerObject.position.x && Input.GetKeyDown(KeyCode.F))
         {
+            
             SceneChangeManager.instance.LoadPrefab("Puzzle", 1);
         }
     }
